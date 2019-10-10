@@ -1,0 +1,26 @@
+\input{style.tex}
+\newgeometry{margin=2cm}
+
+%% pdf inputs
+\usepackage{pdfpages}
+\makeatletter
+\newcommand\pdf[1]{
+  \includepdf[
+    pages=-,
+    pagecommand={}
+  ]{#1}}
+\makeatother
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+\pdf{resume.pdf}
+\pdf{research.pdf}
+\pdf{teaching.pdf}
+\pdf{service.pdf}
+\end{document}

@@ -1,0 +1,248 @@
+\input{style}
+
+\usepackage[
+  backend=biber,
+  style=numeric-comp,
+  natbib=false,
+  sorting=ydmdddnt,
+  minnames=30,
+  maxnames=30,
+  % backref=true,
+  isbn=false,
+  url=false,
+  doi=true,
+  eprint=true,
+  defernumbers=true,
+  arxiv=abs,
+]{biblatex}
+
+%% SSRN support
+\DeclareFieldFormat{eprint:ssrn}{%
+  SSRN: \ifhyperref{%
+    \href{https://ssrn.com/abstract=#1}{{#1}}
+  }{%
+    \nolinkurl{https://ssrn.com/abstract=#1}}
+}
+
+%% sorting issues
+\DeclareSortingScheme{ydmdddnt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field{year}
+  }
+  \sort[direction=descending]{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+  }
+  \sort[direction=descending]{
+    \field{day}
+  }
+  \sort{
+    \field{journaltitle}
+  }
+  \sort{
+    \name{author}
+    \name{editor}
+  }
+  \sort{
+    \field{title}
+  }
+}
+
+%% magic to embolden my name;
+%% https://tex.stackexchange.com/questions/33330/make-one-authors-name-bold-every-time-it-shows-up-in-the-bibliography
+
+\usepackage{xstring,etoolbox}
+\newboolean{bold}
+\newcommand{\makeauthorsbold}[1]{%
+  \DeclareNameFormat{author}{%
+  \setboolean{bold}{false}%
+    \renewcommand{\do}[1]{\expandafter\ifstrequal\expandafter{\namepartfamily}{####1}{\setboolean{bold}{true}}{}}%
+    \docsvlist{#1}%
+    \ifthenelse{\value{listcount}=1}
+    {%
+      {\expandafter\ifthenelse{\boolean{bold}}{\mkbibbold{\namepartfamily\addcomma\addspace \namepartgiveni}}{\namepartfamily\addcomma\addspace \namepartgiveni}}%
+    }{\ifnumless{\value{listcount}}{\value{liststop}}
+      {\expandafter\ifthenelse{\boolean{bold}}{\mkbibbold{\addcomma\addspace \namepartfamily\addcomma\addspace \namepartgiveni}}{\addcomma\addspace \namepartfamily\addcomma\addspace \namepartgiveni}}%
+      {\expandafter\ifthenelse{\boolean{bold}}{\mkbibbold{\addcomma\addspace \namepartfamily\addcomma\addspace \namepartgiveni\addcomma\isdot}}{\addcomma\addspace \namepartfamily\addcomma\addspace \namepartgiveni\addcomma\isdot}}%
+      }
+    \ifthenelse{\value{listcount}<\value{liststop}}
+    {\addcomma\space}{}
+  }
+}
+
+\makeauthorsbold{SURNAME}
+
+%% Cambridge needs both page numbers and number of pages
+\DeclareFieldFormat[article]{pagetotal}{(#1\,pages).}
+\renewbibmacro*{note+pages}{%
+  \printfield{note}%
+  \setunit{\bibpagespunct}%
+  \printfield{pages}%
+  \setunit{ }%
+  \printfield{pagetotal}%
+  \newunit}
+\DeclareFieldFormat[inproceedings]{pagetotal}{(#1\,pages).}
+\renewbibmacro*{chapter+pages}{%
+  \setunit{\bibpagespunct}%
+  \printfield{pages}%
+  \setunit{ }%
+  \printfield{pagetotal}%
+  \newunit}
+
+\addbibresource{YOUR-BIB-FILE.bib}
+
+\defbibfilter{unreviewed}{%
+  ( keyword=abstract
+  or keyword=blog
+  or keyword=chapter
+  or keyword=editorial
+  or keyword=invited
+  or keyword=magazine
+  or keyword=patent
+  or keyword=poster
+  or keyword=techreport
+  ) and not keyword=unpublished
+}
+
+\defbibfilter{journal}{%
+  keyword=journal
+  and not (
+    keyword=abstract
+    or keyword=editorial
+    or keyword=invited
+    or keyword=poster
+    or keyword=reprint
+  )
+}
+
+\defbibfilter{conference}{%
+  keyword=conference
+  and not (
+    keyword=abstract
+    or keyword=editorial
+    or keyword=invited
+    or keyword=poster
+  )
+}
+
+\defbibfilter{workshop}{%
+  keyword=workshop
+  and not (
+    keyword=abstract
+    or keyword=editorial
+    or keyword=invited
+    or keyword=poster
+  )
+}
+
+\begin{document}
+
+\section{Research}
+% 7.6 Applicants should provide an up-to-date list of publications, set out in
+% accordance with the conventions of the relevant academic discipline.
+% Applicants should list publications in a clear chronological order, stating
+% for each publication (including any books) the year and page numbers, and
+% should indicate each listed publication’s (or book’s) number of pages. Listed
+% work should include only work which has already been published, is in the
+% public domain, and is available for consideration. No additional information
+% should be provided.
+
+I have published over 14,356 peer-reviewed papers, reports, and articles. These have been cited literally millions of times in total and more than 6 times in the last five years. My $h$-index is 1034. Google Scholar was used for citation counts throughout this application. Other meaningless bibliometrics and justifications for differences in practice go here.
+
+{
+  \nocite{*}
+  \newrefcontext
+  \printbibliography[heading=subbibintoc,
+    filter=journal, title={Peer-Reviewed Journal Papers}
+  ]
+  \printbibliography[heading=subbibintoc,
+    filter=conference, title={Peer-Reviewed Conference Papers}
+  ]
+  \printbibliography[heading=subbibintoc,
+    filter=workshop, title={Peer-Reviewed Workshop Papers}
+  ]
+  \printbibliography[heading=subbibintoc,
+    filter=unreviewed, title={Technical Reports, Editorials, Book Chapters, Patents, etc.}
+  ]
+}
+
+\subsection{Software}
+
+Software is also very important.
+
+\subsubsection{A System}
+I built this and someone downloaded it once.
+
+\subsection{Grants}
+
+Some people once gave me money to do research, the fools.
+
+{
+  % \rowcolors{1}{lightgrey}{white}
+  \everyrow{\tabucline-}
+  \tabulinesep = 1ex
+
+  \begin{longtabu} to \textwidth{
+      X[1.1,l]
+      X[1.2,l]
+      X[4,l]
+    }
+
+    \bf Dates
+    & \bf Funder
+    & \bf Details
+    \\
+    \endhead
+
+    30-Jan-1932\par\hfill--30-Sep-2022\par\bf\small (active)
+    & UKRI CALL £1,000,000,000
+    & PI: Prof.~A~Bigwig. CI: {\bf YOUR-NAME} and others.
+    \par\em Money, and How To Spend It
+    \\
+
+  \end{longtabu}
+}
+
+\subsection{Collaborators}
+
+I have collaborated with people because it's more fun. Here are some of them: a list of names.
+
+I have also hosted and worked with the following researchers. Those for whom I have been line manager are marked \emph{in italics}.
+
+\begin{tabular}{L!{\VRule}R}
+  1721--date & \emph{Isaac Newton} [ A PROJECT ]\\
+\end{tabular}
+
+\subsection{Invited Talks}
+
+I am regularly invited to give talks at a range of venues, including other academic institutions, research groups, industrial labs, and industry conferences. I list a selection from the past 1000 years here:
+
+{
+  \tabulinesep = 0.65ex
+  \begin{longtabu} to \textwidth{L !{\VRule} R}
+
+    2019-07-17 & An Organisation
+    \it An Interesting Talk Title\\
+
+  \end{longtabu}
+}
+
+\subsection{Press Coverage}
+
+{
+  \tabulinesep = 0.65ex
+  \begin{longtabu} to \textwidth{L !{\VRule} R}
+
+    2050 & BusinessComputerPCWorld.
+    {\it Where did we go wrong?}
+    \par\url{http://A-URL}\\
+
+  \end{longtabu}
+}
+
+\end{document}
