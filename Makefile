@@ -10,6 +10,8 @@ PDFS = cv.pdf annex-a.pdf annex-b.pdf annex-c.pdf statement.pdf
 BIBS = $(wildcard $$HOME/me/publications/rmm-*.bib)
 COVERSHEETS = cs-cv.pdf cs-a.pdf cs-b.pdf cs-c.pdf \
               cs-statement.pdf cs-contextual-factors.pdf
+DROPPINGS = *-blx.bib *.bbl *.run.xml *.xdv *.fls _region_.tex
+
 RESULTS = NAME-document-1.pdf NAME-document-2.pdf
 
 .PHONY: all
@@ -19,25 +21,21 @@ $(RESULTS): $(COVERSHEETS) $(PDFS)
 
 .PHONY: view
 view: $(RESULTS)
-	open $(RESULTS)
+	open $^
 
 .PHONY: clean
 clean:
 	$(LATEX) -c
-	$(RM) *-blx.bib *.bbl *.run.xml *.xdv *.fls _region_.tex
+	$(RM) $(DROPPINGS)
 
 .PHONY: distclean
 distclean:
 	$(LATEX) -C
-	$(RM) *-blx.bib *.bbl *.run.xml *.xdv *.fls _region_.tex
-	$(RM) $(PDFS) $(COVERSHEETS)
+	$(RM) $(DROPPINGS) $(PDFS) $(COVERSHEETS) statement.tex
 
-%.pdf: %.tex style.tex $(BIBS)
-	$(LATEX) $<
-
-.PHONY: count-statement
-count-statement: statement.tex
-	detex $< | wc -w
+statement.tex: statement.in.tex
+	$(RM) statement.tex
+	sed "s/@WORDCOUNT@/$$(($$(detex $< | tail +43 | wc -w)-20))/" $< > statement.tex
 
 CS1 = document_1_application_coversheet_2020_draft_clean.pdf
 CS2 = document_2_personal_statement_coversheet_2020_clean.pdf
@@ -49,3 +47,6 @@ $(COVERSHEETS): $(CS1) $(CS2)
 	$(PDFTK) $(CS1) cat 4   output cs-c.pdf
 	$(PDFTK) $(CS2) cat 1-2 output cs-statement.pdf
 	$(PDFTK) $(CS2) cat 3   output cs-contextual-factors.pdf
+
+%.pdf: %.tex style.tex $(BIBS)
+	$(LATEX) $<
