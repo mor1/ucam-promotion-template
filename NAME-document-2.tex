@@ -1,0 +1,16 @@
+\input{style}
+
+%% pdf inputs
+\usepackage{pdfpages}
+\makeatletter
+\newcommand\pdf[1]{
+  \includepdf[
+    pages=-,
+  ]{#1}}
+\makeatother
+
+\begin{document}
+\pdf{cs-statement.pdf}
+\pdf{statement.pdf}
+\pdf{cs-contextual-factors.pdf}
+\end{document}

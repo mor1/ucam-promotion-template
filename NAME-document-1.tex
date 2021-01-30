@@ -1,0 +1,21 @@
+\input{style}
+
+%% pdf inputs
+\usepackage{pdfpages}
+\makeatletter
+\newcommand\pdf[1]{
+  \includepdf[
+    pages=-,
+  ]{#1}}
+\makeatother
+
+\begin{document}
+\pdf{cs-cv.pdf}
+\pdf{cv.pdf}
+\pdf{cs-a.pdf}
+\pdf{annex-a.pdf}
+\pdf{cs-b.pdf}
+\pdf{annex-b.pdf}
+\pdf{cs-c.pdf}
+\pdf{annex-c.pdf}
+\end{document}
