@@ -1,7 +1,6 @@
 \documentclass[a4paper, 11pt]{article}
 
 % urls
-\usepackage[hyphens]{url}
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
   breaklinks=true,
@@ -14,8 +13,6 @@
   citecolor=blue,
   pdfborder={0 0 0}
 }
-\usepackage{relsize}
-\renewcommand*{\UrlFont}{\ttfamily\smaller\relax}
 
 %% layout
 \usepackage[margin=2cm]{geometry}
@@ -68,7 +65,7 @@
 
 %% misc
 \newcommand\anote[2]{{\color{#1}\bf #2}}
-\newcommand\xxx[1]{{\anote{red}{xxx: #1}}}
+\newcommand\mort[1]{{\anote{red}{mort: #1}}}
 
 \newcommand{\one}{({\em i})}
 \newcommand{\two}{({\em ii})}
