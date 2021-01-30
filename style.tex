@@ -1,5 +1,15 @@
 \documentclass[a4paper, 11pt]{article}
 
+%% tables
+\usepackage{graphicx,longtable,tabu}
+\usepackage[table]{xcolor}
+\definecolor{lightgrey}{gray}{0.8}
+\newcolumntype{L}{>{\raggedleft}p{0.15\textwidth}}
+\newcolumntype{R}{p{0.84\textwidth}}
+\newcolumntype{N}{>{\raggedleft}p{0.06\textwidth}}
+\newcolumntype{M}{p{0.93\textwidth}}
+\newcommand\VRule{\color{lightgrey}\vrule width 0.5pt}
+
 % urls
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
@@ -46,17 +56,7 @@
 \defaultfontfeatures{Mapping=tex-text,Scale=MatchUppercase}
 \renewcommand{\familydefault}{\rmdefault}
 \setmainfont{Helvetica}
-\setmonofont{Hack}
-
-%% tables
-\usepackage{graphicx,longtable,tabu}
-\usepackage[table]{xcolor}
-\definecolor{lightgrey}{gray}{0.8}
-\newcolumntype{L}{>{\raggedleft}p{0.15\textwidth}}
-\newcolumntype{R}{p{0.84\textwidth}}
-\newcolumntype{N}{>{\raggedleft}p{0.06\textwidth}}
-\newcolumntype{M}{p{0.93\textwidth}}
-\newcommand\VRule{\color{lightgrey}\vrule width 0.5pt}
+\setmonofont{Hack Nerd Font}
 
 %% debugging
 % \floatstyle{boxed}
