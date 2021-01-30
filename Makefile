@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := cv.pdf
-
 TEXINPUTS := .:$$HOME/src/tex:
 BIBINPUTS := .:$$HOME/src/bib:
 BSTINPUTS := .:$$HOME/src/tex:$$HOME/src/bib:
